@@ -23,7 +23,7 @@ namespace Online_Shopping_Cart.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                   //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+               //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=ATMECSINLT-684\\MSSQLSERVERNEW;Initial Catalog=Shopping_cart;integrated security=True;");
             }
         }
@@ -33,21 +33,22 @@ namespace Online_Shopping_Cart.Models
             modelBuilder.Entity<Login>(entity =>
             {
                 entity.HasKey(e => e.EmailId)
-                    .HasName("PK_login_1");
+                    .HasName("PK__login__7ED91ACF92D87636");
 
                 entity.ToTable("login");
 
                 entity.Property(e => e.EmailId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Password)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Token)
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("token");
             });
 
             OnModelCreatingPartial(modelBuilder);
