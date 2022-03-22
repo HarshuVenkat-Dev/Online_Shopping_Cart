@@ -14,8 +14,6 @@ namespace Online_Shopping_Cart.Controllers
     [Route("{controller}/{action}")]
     public class LoginController : ControllerBase
     {
-       
-
         public IActionResult PostRegister([FromBody] Login value)
         {
             using (var context = new Shopping_cartContext())
@@ -26,16 +24,16 @@ namespace Online_Shopping_Cart.Controllers
                     {
                         context.Logins.Add(value);
                         context.SaveChanges();
-                        return Ok("New Employee Created Status Code: 201");
+                        return Ok("Success");
                     }
                     else
                     {
-                        return BadRequest("Bad Request Status Code: 404");
+                        return BadRequest("Failed");
                     }
                 }
                 catch (Exception ex)
                 {
-                    return NotFound("Bad Request Status Code: 404" + ex);
+                    return NotFound("Failed" + ex);
                 }
             }
         }
@@ -63,9 +61,9 @@ namespace Online_Shopping_Cart.Controllers
                 {
                     try
                     {
-                    loginData1.Token = token;
-                    context.Entry(loginData1).State = EntityState.Modified;
-                    context.SaveChanges();
+                        loginData1.Token = token;
+                        context.Entry(loginData1).State = EntityState.Modified;
+                        context.SaveChanges();
                         MailMessage mail = new MailMessage();
                         SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
                         mail.From = new MailAddress("harshini.venkatesan@atmecs.com");
@@ -97,13 +95,13 @@ namespace Online_Shopping_Cart.Controllers
             {
                 //var loginData2 = context.Logins.Find(token);
                 var loginstr = context.Logins.Where(b => b.Token == value.Token && b.EmailId == value.EmailId).FirstOrDefault();
-                if (loginstr!=null)
+                if (loginstr != null)
                 {
                     loginstr.Password = value.Password;
                     loginstr.Token = null;
                     context.Entry(loginstr).State = EntityState.Modified;
                     context.SaveChanges();
-                    return Ok("Password Updated Successfully");
+                    return Ok("Success");
                 }
             }
             return Ok("Failed");
