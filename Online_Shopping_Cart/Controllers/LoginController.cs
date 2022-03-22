@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Online_Shopping_Cart.Service;
+using Microsoft.AspNet.Identity;
 
 namespace Online_Shopping_Cart.Controllers
 {
@@ -20,6 +22,8 @@ namespace Online_Shopping_Cart.Controllers
             {
                 try
                 {
+                    PasswordHasherManager phm = new PasswordHasherManager();
+                    value.Password = phm.HashPassword(value.Password);
                     if (ModelState.IsValid)
                     {
                         context.Logins.Add(value);
@@ -47,6 +51,31 @@ namespace Online_Shopping_Cart.Controllers
 
                 return loginData;
             }
+        }
+
+        [HttpPost()]
+        public IActionResult GetByEmailPassword([FromBody] Login value)
+        {
+            /*PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;*/
+            using (var context = new Shopping_cartContext())
+            {
+                var loginData = context.Logins.Find(value.EmailId);
+                if (loginData != null)
+                {
+                    PasswordHasherManager phm2 = new PasswordHasherManager();
+                    string newPwd = phm2.VerifyHashedPassword(loginData.Password, value.Password.Trim());
+                    if(newPwd == "Success")
+                    {
+                        return Ok("LoggedIn");
+                    }
+                }
+                else
+                {
+                    return Ok("Invalid EmailId");
+                }
+
+            }
+            return Ok("Invalid EmailId");
         }
 
         [Produces("application/json")]

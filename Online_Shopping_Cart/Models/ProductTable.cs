@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Online_Shopping_Cart.Models
 {
-    public partial class Product
+    public partial class ProductTable
     {
         public int Id { get; set; }
         public string Title { get; set; }

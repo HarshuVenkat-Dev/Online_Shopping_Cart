@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Online_Shopping_Cart.Models;
+using Online_Shopping_Cart.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,11 @@ namespace Online_Shopping_Cart.Controllers
         {
             using (var context = new Shopping_cartContext())
             {
-                var loginstr = context.Logins.Where(b => b.EmailId == value.EmailId && b.Password == value.CurrentPassword.Trim()).FirstOrDefault();
+                var loginstr = context.Logins.Where(b => b.EmailId == value.EmailId).FirstOrDefault();
                 if (loginstr != null)
                 {
-                    loginstr.Password = value.NewPassword.Trim();
+                    PasswordHasherManager phm = new PasswordHasherManager();
+                    value.NewPassword = phm.HashPassword(value.NewPassword);
                     context.Entry(loginstr).State = EntityState.Modified;
                     context.SaveChanges();
                     return Ok("Success");
