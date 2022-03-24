@@ -56,18 +56,18 @@ namespace Online_Shopping_Cart.Controllers
         [HttpPost()]
         public IActionResult GetByEmailPassword([FromBody] Login value)
         {
-            /*PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;*/
+            PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;
             using (var context = new Shopping_cartContext())
             {
                 var loginData = context.Logins.Find(value.EmailId);
                 if (loginData != null)
                 {
-                    PasswordHasherManager phm2 = new PasswordHasherManager();
+                   /* PasswordHasherManager phm2 = new PasswordHasherManager();
                     string newPwd = phm2.VerifyHashedPassword(loginData.Password, value.Password.Trim());
-                    if(newPwd == "Success")
+                    if (newPwd == "Success")
                     {
                         return Ok("LoggedIn");
-                    }
+                    }*/
                 }
                 else
                 {
@@ -126,7 +126,9 @@ namespace Online_Shopping_Cart.Controllers
                 var loginstr = context.Logins.Where(b => b.Token == value.Token && b.EmailId == value.EmailId).FirstOrDefault();
                 if (loginstr != null)
                 {
-                    loginstr.Password = value.Password;
+                    PasswordHasherManager phm = new PasswordHasherManager();
+                    loginstr.Password = phm.HashPassword(value.Password);
+                    /*loginstr.Password = value.Password;*/
                     loginstr.Token = null;
                     context.Entry(loginstr).State = EntityState.Modified;
                     context.SaveChanges();

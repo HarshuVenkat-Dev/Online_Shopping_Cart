@@ -23,7 +23,7 @@ namespace Online_Shopping_Cart.Controllers
                 if (loginstr != null)
                 {
                     PasswordHasherManager phm = new PasswordHasherManager();
-                    value.NewPassword = phm.HashPassword(value.NewPassword);
+                    loginstr.Password = phm.HashPassword(value.NewPassword);
                     context.Entry(loginstr).State = EntityState.Modified;
                     context.SaveChanges();
                     return Ok("Success");
