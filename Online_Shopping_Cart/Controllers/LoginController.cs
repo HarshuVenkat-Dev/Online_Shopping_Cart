@@ -42,6 +42,7 @@ namespace Online_Shopping_Cart.Controllers
             }
         }
 
+
         [HttpGet("{email}")]
         public Login GetByemail(string email)
         {
@@ -53,30 +54,28 @@ namespace Online_Shopping_Cart.Controllers
             }
         }
 
+
         [HttpPost()]
-        public IActionResult GetByEmailPassword([FromBody] Login value)
+        public Login GetByEmailPassword([FromBody] Login value)
         {
-            PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;
+            /*PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;*/
             using (var context = new Shopping_cartContext())
             {
                 var loginData = context.Logins.Find(value.EmailId);
                 if (loginData != null)
                 {
-                   /* PasswordHasherManager phm2 = new PasswordHasherManager();
+                    PasswordHasherManager phm2 = new PasswordHasherManager();
                     string newPwd = phm2.VerifyHashedPassword(loginData.Password, value.Password.Trim());
                     if (newPwd == "Success")
                     {
-                        return Ok("LoggedIn");
-                    }*/
+                       loginData.Token = "loggedin";
+                       return loginData;
+                    }
                 }
-                else
-                {
-                    return Ok("Invalid EmailId");
-                }
-
+                return loginData;
             }
-            return Ok("Invalid EmailId");
         }
+
 
         [Produces("application/json")]
         [HttpGet("{emailId}")]
@@ -103,7 +102,6 @@ namespace Online_Shopping_Cart.Controllers
                         SmtpServer.Port = 587;
                         SmtpServer.Credentials = new System.Net.NetworkCredential("harshini.venkatesan@atmecs.com", "Haha@1426vesa");
                         SmtpServer.EnableSsl = true;
-
                         SmtpServer.Send(mail);
                     }
                     catch (Exception ex)
