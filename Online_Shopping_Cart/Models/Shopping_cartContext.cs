@@ -18,6 +18,7 @@ namespace Online_Shopping_Cart.Models
         }
 
         public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<CartTbl> CartTbls { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
@@ -28,7 +29,7 @@ namespace Online_Shopping_Cart.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-              //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=ATMECSINLT-684\\MSSQLSERVERNEW;Initial Catalog=Shopping_cart;integrated security=True;");
             }
         }
@@ -45,6 +46,25 @@ namespace Online_Shopping_Cart.Models
 
                 entity.Property(e => e.Price)
                     .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CartTbl>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("Cart_tbl");
+
+                entity.Property(e => e.ProductId)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ShoppingId)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
             });
 
@@ -70,6 +90,18 @@ namespace Online_Shopping_Cart.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Address)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -78,6 +110,10 @@ namespace Online_Shopping_Cart.Models
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("token");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Order>(entity =>

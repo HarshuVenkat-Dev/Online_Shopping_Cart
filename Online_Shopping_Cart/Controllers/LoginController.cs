@@ -58,7 +58,7 @@ namespace Online_Shopping_Cart.Controllers
         [HttpPost()]
         public Login GetByEmailPassword([FromBody] Login value)
         {
-            /*PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;*/
+            PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;
             using (var context = new Shopping_cartContext())
             {
                 var loginData = context.Logins.Find(value.EmailId);
@@ -68,8 +68,8 @@ namespace Online_Shopping_Cart.Controllers
                     string newPwd = phm2.VerifyHashedPassword(loginData.Password, value.Password.Trim());
                     if (newPwd == "Success")
                     {
-                       loginData.Token = "loggedin";
-                       return loginData;
+                        loginData.Token = "loggedin";
+                        return loginData;
                     }
                 }
                 return loginData;
@@ -126,7 +126,7 @@ namespace Online_Shopping_Cart.Controllers
                 {
                     PasswordHasherManager phm = new PasswordHasherManager();
                     loginstr.Password = phm.HashPassword(value.Password);
-                    /*loginstr.Password = value.Password;*/
+                    loginstr.Password = value.Password;
                     loginstr.Token = null;
                     context.Entry(loginstr).State = EntityState.Modified;
                     context.SaveChanges();

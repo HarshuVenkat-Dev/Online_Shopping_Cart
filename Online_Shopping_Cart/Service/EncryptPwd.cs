@@ -18,7 +18,6 @@ namespace Online_Shopping_Cart.Service
                 foreach (byte x in b)
                 {
                     sb.Append(x.ToString("x2"));
-
                 }
                 return sb.ToString();
             }
