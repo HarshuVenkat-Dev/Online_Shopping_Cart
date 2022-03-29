@@ -58,7 +58,6 @@ namespace Online_Shopping_Cart.Controllers
         [HttpPost()]
         public Login GetByEmailPassword([FromBody] Login value)
         {
-            PasswordVerificationResult newPwd = PasswordVerificationResult.Failed;
             using (var context = new Shopping_cartContext())
             {
                 var loginData = context.Logins.Find(value.EmailId);
