@@ -79,6 +79,8 @@ namespace Online_Shopping_Cart.Models
 
             modelBuilder.Entity<Login>(entity =>
             {
+                entity.HasAlternateKey(e => e.UserId);
+
                 entity.HasKey(e => e.EmailId)
                     .HasName("PK__login__7ED91ACF92D87636");
 
