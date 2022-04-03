@@ -17,11 +17,11 @@ namespace Online_Shopping_Cart.Models
         {
         }
 
-        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<CartTbl> CartTbls { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductTable> ProductTables { get; set; }
 
@@ -29,7 +29,7 @@ namespace Online_Shopping_Cart.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=ATMECSINLT-684\\MSSQLSERVERNEW;Initial Catalog=Shopping_cart;integrated security=True;");
             }
         }
@@ -37,17 +37,6 @@ namespace Online_Shopping_Cart.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
-            modelBuilder.Entity<Cart>(entity =>
-            {
-                entity.ToTable("Cart");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Price)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-            });
 
             modelBuilder.Entity<CartTbl>(entity =>
             {
@@ -79,8 +68,6 @@ namespace Online_Shopping_Cart.Models
 
             modelBuilder.Entity<Login>(entity =>
             {
-                entity.HasAlternateKey(e => e.UserId);
-
                 entity.HasKey(e => e.EmailId)
                     .HasName("PK__login__7ED91ACF92D87636");
 
@@ -116,11 +103,33 @@ namespace Online_Shopping_Cart.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.ToTable("order");
+                entity.HasKey(x => x.Orderid);
+                entity.Property(x => x.Orderid).ValueGeneratedOnAdd();
+                entity.Property(e => e.Orderid).HasColumnName("orderid");
 
-                entity.Property(e => e.Price)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_date");
+
+                entity.Property(e => e.Userid).HasColumnName("userid");
+            });
+
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasKey(e => e.Orderdetailsid);
+
+                entity.ToTable("order_details");
+
+                entity.Property(e => e.Orderdetailsid).HasColumnName("orderdetailsid");
+
+                entity.Property(e => e.Orderid).HasColumnName("orderid");
+
+                entity.Property(e => e.Price).HasColumnName("price");
+
+                entity.Property(e => e.Productid).HasColumnName("productid");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
             });
 
             modelBuilder.Entity<Product>(entity =>

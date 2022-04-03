@@ -102,12 +102,14 @@ namespace Online_Shopping_Cart.Controllers
                         SmtpServer.Credentials = new System.Net.NetworkCredential("harshini.venkatesan@atmecs.com", "Haha@1426vesa");
                         SmtpServer.EnableSsl = true;
                         SmtpServer.Send(mail);
+                        return Ok("Success");
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.ToString());
+                        return Ok("failed");
                     }
-                    return Ok("Success");
+                    
                 }
             }
             return Ok("failed");

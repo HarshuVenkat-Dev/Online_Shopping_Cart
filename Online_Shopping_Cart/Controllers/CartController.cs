@@ -17,7 +17,7 @@ namespace Online_Shopping_Cart.Controllers
     public class CartController : ControllerBase
     {
         [HttpPost()]
-        public IActionResult Addtocart([FromBody] CartTbl cartt)
+        public IActionResult Addtocart([FromBody] OrderDetail orderDetail)
         {
             using (var context = new Shopping_cartContext())
             {
@@ -25,11 +25,11 @@ namespace Online_Shopping_Cart.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        
-                        var match = Regex.Match(context.CartTbls.Max(x => x.ShoppingId), @"^([^0-9]+)([0-9]+)$");
+
+                        /*var match = Regex.Match(context.CartTbls.Max(x => x.ShoppingId), @"^([^0-9]+)([0-9]+)$");
                         var num = int.Parse(match.Groups[2].Value);
-                        cartt.ShoppingId = match.Groups[1].Value + (num + 1);
-                        context.CartTbls.Add(cartt);
+                        match.Groups[1].Value + (num + 1);*/
+                        context.OrderDetails.Add(orderDetail);
                         context.SaveChanges();
                         return Ok("Success");
                     }
@@ -45,10 +45,77 @@ namespace Online_Shopping_Cart.Controllers
             }
         }
 
+
+        [HttpPost()]
+        public IActionResult order([FromBody] Order value)
+        {
+            using (var context = new Shopping_cartContext())
+            {
+                var data=0;
+                if (ModelState.IsValid)
+                {
+                    value.CreatedDate =  DateTime.Now;
+                    data = context.Orders.Max(x => x.Orderid)+1; 
+                    context.Orders.Add(value);
+                    context.SaveChanges();
+                }
+                return Ok(data);
+            }
+        }
+
+
+
+        [HttpPost()]
+        public IActionResult PostOrderdetails([FromBody] OrderDetail od)
+        {
+            using (var context = new Shopping_cartContext())
+            {
+                if (ModelState.IsValid)
+                {                  
+                    context.OrderDetails.Add(od);
+                    context.SaveChanges();
+                }
+                return Ok("Success");
+            }
+        }
+
+
+
+
+
+
+        /*  try
+          {
+              var details = context.OrderDetails.Where(b => b.Orderid == od.Orderid).FirstOrDefault();
+              if (details != null)
+              {
+                  details.Productid = od.Productid;
+                  details.Price = od.Price;
+                  details.Quantity = od.Quantity;
+                  if (ModelState.IsValid)
+                  {
+                      context.OrderDetails.Add(od);
+                      context.SaveChanges();
+                      return Ok("Success");
+                  }
+                  else
+                  {
+                      return BadRequest("Failed");
+                  }
+              }
+          }
+          catch (Exception ex)
+          {
+              return NotFound("Failed" + ex);
+          }*/
+
+
+
+
+
         [HttpGet("{UserId}")]
         public IEnumerable<CustomHistoryResponse> Get(string UserId)
         {
-            /*List<CustomHistoryResponse> lstmain = new List<CustomHistoryResponse>();*/
             using (var context = new Shopping_cartContext())
             {
 
@@ -71,6 +138,7 @@ namespace Online_Shopping_Cart.Controllers
 
                               }).ToList();
 
+                /*List<CustomHistoryResponse> lstmain = new List<CustomHistoryResponse>();*/
                 /*var result = select c.*, p.* from context.CartTbl as c join context.ProductTable as p on p.ID = c.ProductId where c.UserId = 1003;*/
 
 
@@ -99,19 +167,9 @@ namespace Online_Shopping_Cart.Controllers
                     }
                     }
                 return lstmain;*/
-
                 // select sd;
                 return (IEnumerable<CustomHistoryResponse>)result;
-                /*}*/
             }
-        }
-
-
-        [HttpGet("{userId}")]
-        public IActionResult CartHistory(string userId)
-        {
-
-            return Ok();
         }
     }
 }
