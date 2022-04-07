@@ -80,35 +80,28 @@ namespace Online_Shopping_Cart.Controllers
         }
 
 
+        [HttpGet("{UserId}")]
+        public IEnumerable<Order> orderhistory(int Userid)
+        {
+            using (var context = new Shopping_cartContext())
+            {
+                var result = (from order in context.Orders where order.Userid == Userid select order).ToList();
+                return result;
+            }
+            
+        }
 
 
+        [HttpGet("{orderid}")]
+        public IEnumerable<OrderDetail> orderinvoice(int orderid)
+        {
+            using (var context = new Shopping_cartContext())
+            {
+                var result = (from orderd in context.OrderDetails where orderd.Orderid == orderid select orderd).ToList();
+                return result;
+            }
 
-
-        /*  try
-          {
-              var details = context.OrderDetails.Where(b => b.Orderid == od.Orderid).FirstOrDefault();
-              if (details != null)
-              {
-                  details.Productid = od.Productid;
-                  details.Price = od.Price;
-                  details.Quantity = od.Quantity;
-                  if (ModelState.IsValid)
-                  {
-                      context.OrderDetails.Add(od);
-                      context.SaveChanges();
-                      return Ok("Success");
-                  }
-                  else
-                  {
-                      return BadRequest("Failed");
-                  }
-              }
-          }
-          catch (Exception ex)
-          {
-              return NotFound("Failed" + ex);
-          }*/
-
+        }
 
 
 

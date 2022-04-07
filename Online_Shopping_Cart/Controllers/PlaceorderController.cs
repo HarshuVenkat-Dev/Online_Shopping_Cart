@@ -11,6 +11,5 @@ namespace Online_Shopping_Cart.Controllers
     [Route("{controller}/{action}")]
     public class PlaceorderController : ControllerBase
     {
-
     }
 }

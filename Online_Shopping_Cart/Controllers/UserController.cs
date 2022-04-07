@@ -31,5 +31,25 @@ namespace Online_Shopping_Cart.Controllers
             }
             return Ok("Failed");
         }
+
+
+        [HttpPut]
+        public IActionResult userprofileupdate([FromBody] Login value)
+        {
+            using (var context = new Shopping_cartContext())
+            {
+                var loginstr = context.Logins.Where(b => b.EmailId == value.EmailId).FirstOrDefault();
+                if (loginstr != null)
+                {
+                    loginstr.FirstName = value.FirstName;
+                    loginstr.LastName = value.LastName;
+                    loginstr.Address = value.Address;
+                    context.Entry(loginstr).State = EntityState.Modified;   
+                    context.SaveChanges();
+                    return Ok("Success");
+                }
+            }
+            return Ok("Failed");
+        }
     }
 }
