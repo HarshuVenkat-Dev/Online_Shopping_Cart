@@ -43,6 +43,22 @@ namespace Online_Shopping_Cart.Controllers
         }
 
 
+        [HttpPost()]
+        public IActionResult address([FromBody] AddressTbl addressTbl)
+        {
+            using (var context = new Shopping_cartContext())
+            {
+                /*var id = 0;*/
+                if (ModelState.IsValid)
+                {
+                    context.AddressTbls.Add(addressTbl);
+                    context.SaveChanges();
+                }
+                return Ok("Success");
+            }
+        }
+
+
         [HttpGet("{email}")]
         public Login GetByemail(string email)
         {
@@ -90,6 +106,7 @@ namespace Online_Shopping_Cart.Controllers
                     {
                         loginData1.Token = token;
                         context.Entry(loginData1).State = EntityState.Modified;
+                        context.Entry(loginData1).Property(x => x.UserId).IsModified = false;
                         context.SaveChanges();
                         MailMessage mail = new MailMessage();
                         SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
@@ -127,9 +144,9 @@ namespace Online_Shopping_Cart.Controllers
                 {
                     PasswordHasherManager phm = new PasswordHasherManager();
                     loginstr.Password = phm.HashPassword(value.Password);
-                    loginstr.Password = value.Password;
                     loginstr.Token = null;
                     context.Entry(loginstr).State = EntityState.Modified;
+                    context.Entry(loginstr).Property(x => x.UserId).IsModified = false;
                     context.SaveChanges();
                     return Ok("Success");
                 }

@@ -128,7 +128,6 @@ namespace Online_Shopping_Cart.Controllers
                                   Description= p.Description,
                                   Category=p.Category,
                                   Image=p.Image
-
                               }).ToList();
 
                 /*List<CustomHistoryResponse> lstmain = new List<CustomHistoryResponse>();*/

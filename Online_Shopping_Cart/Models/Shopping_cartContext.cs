@@ -17,6 +17,7 @@ namespace Online_Shopping_Cart.Models
         {
         }
 
+        public virtual DbSet<AddressTbl> AddressTbls { get; set; }
         public virtual DbSet<CartTbl> CartTbls { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
@@ -29,7 +30,7 @@ namespace Online_Shopping_Cart.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=ATMECSINLT-684\\MSSQLSERVERNEW;Initial Catalog=Shopping_cart;integrated security=True;");
             }
         }
@@ -37,6 +38,24 @@ namespace Online_Shopping_Cart.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<AddressTbl>(entity =>
+            {
+                entity.ToTable("Address_tbl");
+
+                entity.Property(e => e.AddressLine1)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("Address Line1");
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.State)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
 
             modelBuilder.Entity<CartTbl>(entity =>
             {
@@ -68,35 +87,31 @@ namespace Online_Shopping_Cart.Models
 
             modelBuilder.Entity<Login>(entity =>
             {
-            entity.HasKey(e => e.EmailId)
-                .HasName("PK__login__7ED91ACF92D87636");
+                entity.HasKey(e => e.EmailId)
+                    .HasName("PK__login__7ED91ACF92D87636");
 
-            entity.ToTable("login");
+                entity.ToTable("login");
 
-            entity.Property(e => e.EmailId)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+                entity.Property(e => e.EmailId)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-            entity.Property(e => e.Address)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-            entity.Property(e => e.LastName)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+                entity.Property(e => e.Password)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-            entity.Property(e => e.Password)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-
-            entity.Property(e => e.Token)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("token");
+                entity.Property(e => e.Token)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("token");
 
                 entity.Property(e => e.UserId).ValueGeneratedOnAdd();
             });

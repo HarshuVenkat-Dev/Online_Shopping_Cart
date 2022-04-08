@@ -25,6 +25,7 @@ namespace Online_Shopping_Cart.Controllers
                     PasswordHasherManager phm = new PasswordHasherManager();
                     loginstr.Password = phm.HashPassword(value.NewPassword);
                     context.Entry(loginstr).State = EntityState.Modified;
+                    context.Entry(loginstr).Property(x => x.UserId).IsModified = false;
                     context.SaveChanges();
                     return Ok("Success");
                 }
@@ -33,7 +34,7 @@ namespace Online_Shopping_Cart.Controllers
         }
 
 
-        [HttpPut]
+       /* [HttpPut]
         public IActionResult userprofileupdate([FromBody] Login value)
         {
             using (var context = new Shopping_cartContext())
@@ -50,6 +51,6 @@ namespace Online_Shopping_Cart.Controllers
                 }
             }
             return Ok("Failed");
-        }
+        }*/
     }
 }
