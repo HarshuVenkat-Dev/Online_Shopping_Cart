@@ -29,6 +29,7 @@ namespace Online_Shopping_Cart.Controllers
                         context.Logins.Add(value);
                         context.SaveChanges();
                         return Ok("Success");
+
                     }
                     else
                     {

@@ -97,10 +97,10 @@ namespace Online_Shopping_Cart.Controllers
         {
             using (var context = new Shopping_cartContext())
             {
-                /* var result = (from orderd in context.OrderDetails where orderd.Orderid == orderid select orderd).ToList();*/
+                /*var result = (from orderd in context.OrderDetails where orderd.Orderid == orderid select orderd).ToList();*/
                 var result = (from row in context.OrderDetails
-                              join p in context.ProductTables on row.Productid equals p.Id
-                              where row.Orderid == orderid
+                              join p in context.ProductTables on row.Productid equals p.Id 
+                              
                               select new Invoice()
                               {
                                   Orderid = row.Orderid,

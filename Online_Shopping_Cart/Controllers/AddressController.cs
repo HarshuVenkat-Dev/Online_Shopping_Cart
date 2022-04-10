@@ -26,5 +26,15 @@ namespace Online_Shopping_Cart.Controllers
                 return Ok("Success");
             }
         }
+
+        [HttpGet("{userId}")]
+        public IEnumerable<AddressTbl> getaddress(int userId)
+        {
+            using (var context = new Shopping_cartContext())
+            {
+                var result = (from order in context.AddressTbls where order.UserId == userId select order).ToList();
+                return result;
+            }
+        }
     }
 }
