@@ -43,22 +43,6 @@ namespace Online_Shopping_Cart.Controllers
         }
 
 
-        [HttpPost()]
-        public IActionResult address([FromBody] AddressTbl addressTbl)
-        {
-            using (var context = new Shopping_cartContext())
-            {
-                /*var id = 0;*/
-                if (ModelState.IsValid)
-                {
-                    context.AddressTbls.Add(addressTbl);
-                    context.SaveChanges();
-                }
-                return Ok("Success");
-            }
-        }
-
-
         [HttpGet("{email}")]
         public Login GetByemail(string email)
         {

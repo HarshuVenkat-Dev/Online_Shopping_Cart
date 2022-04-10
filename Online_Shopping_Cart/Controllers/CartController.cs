@@ -93,12 +93,24 @@ namespace Online_Shopping_Cart.Controllers
 
 
         [HttpGet("{orderid}")]
-        public IEnumerable<OrderDetail> orderinvoice(int orderid)
+        public IEnumerable<Invoice> orderinvoice(int orderid)
         {
             using (var context = new Shopping_cartContext())
             {
-                var result = (from orderd in context.OrderDetails where orderd.Orderid == orderid select orderd).ToList();
-                return result;
+                /* var result = (from orderd in context.OrderDetails where orderd.Orderid == orderid select orderd).ToList();*/
+                var result = (from row in context.OrderDetails
+                              join p in context.ProductTables on row.Productid equals p.Id
+                              where row.Orderid == orderid
+                              select new Invoice()
+                              {
+                                  Orderid = row.Orderid,
+                                  Productid = row.Productid,
+                                  Price = row.Price,
+                                  Quantity = row.Quantity,
+                                  Title = p.Title,
+                                  Image = p.Image
+                              }).ToList();
+                return (IEnumerable<Invoice>)result;
             }
 
         }
