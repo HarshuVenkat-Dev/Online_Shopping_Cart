@@ -51,11 +51,21 @@ namespace Online_Shopping_Cart.Controllers
         {
             using (var context = new Shopping_cartContext())
             {
-                var data=0;
-                if (ModelState.IsValid)
+                var data = 0;
+                try
                 {
-                    value.CreatedDate =  DateTime.Now;
-                    data = context.Orders.Max(x => x.Orderid)+1; 
+                    
+                    if (ModelState.IsValid)
+                    {
+                        value.CreatedDate = DateTime.Now;
+                        data = context.Orders.Max(x => x.Orderid) + 1;
+                        context.Orders.Add(value);
+                        context.SaveChanges();
+                    }
+                }
+                catch(Exception ex)
+                {
+                    data = 1;
                     context.Orders.Add(value);
                     context.SaveChanges();
                 }
@@ -99,7 +109,7 @@ namespace Online_Shopping_Cart.Controllers
             {
                 /*var result = (from orderd in context.OrderDetails where orderd.Orderid == orderid select orderd).ToList();*/
                 var result = (from row in context.OrderDetails
-                              join p in context.ProductTables on row.Productid equals p.Id 
+                              join p in context.ProductTables on row.Productid equals (int)p.Id 
                               
                               select new Invoice()
                               {

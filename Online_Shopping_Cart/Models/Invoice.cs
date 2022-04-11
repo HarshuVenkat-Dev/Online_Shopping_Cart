@@ -7,7 +7,6 @@ namespace Online_Shopping_Cart.Models
 {
     public class Invoice
     {
-        public int Orderdetailsid { get; set; }
         public int Orderid { get; set; }
         public int? Productid { get; set; }
         public int? Price { get; set; }
